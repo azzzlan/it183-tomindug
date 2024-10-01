@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1c1e21;
+            font-weight: 600;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #606770;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #ccd0d5;
+            border-radius: 6px;
+            background-color: #f5f6f7;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #1877f2;
+            background-color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            color: white;
+            background-color: #1877f2;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #166fe5;
+        }
+
+        .cancel-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #1877f2;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .cancel-link:hover {
+            text-decoration: underline;
+        }
+
+        /* For mobile responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Post</h1>
+
+        <!-- Form for editing the post -->
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }} <!-- This will render the fields of the form -->
+            <button type="submit">Save Changes</button>
+        </form>
+
+        <!-- Cancel link to go back to the post detail page -->
+        <a href="{% url 'post_detail' pk=post.pk %}" class="cancel-link">Cancel</a>
+    </div>
+</body>
+</html>

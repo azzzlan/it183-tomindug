@@ -1,0 +1,146 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Post Title Style */
+        .post-title {
+            font-size: 28px; /* Bigger font size */
+            color: #1c1e21;
+            font-weight: bold;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #e4e6eb; /* Bottom border for emphasis */
+            padding-bottom: 10px; /* Spacing between title and date */
+        }
+
+        /* Published Date Style */
+        .published-date {
+            font-size: 14px;
+            color: #606770;
+            margin-bottom: 20px;
+            font-style: italic; /* Italic style for the date */
+        }
+
+        .post-content {
+            font-size: 16px;
+            color: #1c1e21;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .post-content p {
+            margin-bottom: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-return {
+            background-color: #e7e7e7; /* Light gray for return button */
+            color: #1c1e21; /* Dark text color */
+            border: 1px solid #ccc; /* Light border */
+        }
+
+        .btn-return:hover {
+            background-color: #d4d4d4; /* Darker gray on hover */
+        }
+
+        .btn-edit {
+            background-color: #1877f2; /* Facebook blue */
+        }
+
+        .btn-edit:hover {
+            background-color: #166fe5;
+        }
+
+        .btn-delete {
+            background-color: #f02849; /* Red for delete */
+        }
+
+        .btn-delete:hover {
+            background-color: #d0263e;
+        }
+
+        /* For mobile responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Return Button -->
+        <a href="{% url 'index' %}" class="btn btn-return">Return</a> <!-- Replace 'index' with the actual URL name if different -->
+
+        <!-- Post Title -->
+        <h1 class="post-title">{{ post.title }}</h1>
+
+        <!-- Post Published Date -->
+        <p class="published-date">Published: {{ post.published_date }}</p>
+
+        <!-- Post Content -->
+        <div class="post-content">
+            <p>{{ post.content|linebreaks }}</p>
+        </div>
+
+        <!-- Buttons for Edit and Delete Actions -->
+        <div class="button-group">
+            <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-edit">Edit</a>
+            <form method="post" class="delete-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-delete">Delete</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}
