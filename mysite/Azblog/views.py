@@ -1,20 +1,11 @@
-from django.shortcuts import render, get_object_or_404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Post
 from .forms import PostForm
-# Create your views here.
-# Suggested code may be subject to a license. Learn more: ~LicenseLog:1661712556.
-from django.shortcuts import render
-from .models import Post
-
-# Suggested code may be subject to a license. Learn more: ~LicenseLog:3215286551.
-from django import forms
-from .models import Post
-
 
 def index(request):
     posts = Post.objects.all()
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)  # Include request.FILES for file uploads
         if form.is_valid():
             form.save()
             return redirect('index')  # Redirect to the index page after creating a post
@@ -24,35 +15,35 @@ def index(request):
     context = {'posts': posts, 'form': form}
     return render(request, 'index.html', context)
 
-# Suggested code may be subject to a license. Learn more: ~LicenseLog:3728279174.
-# Suggested code may be subject to a license. Learn more: ~LicenseLog:2370036352.
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
-
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    if request.method == 'POST':
+    if request.method == 'POST':  # Handle delete request
         post.delete()
         return redirect('index')  # Redirect to the index page after deletion
     context = {'post': post}
     return render(request, 'post_detail.html', context)
 
-# Suggested code may be subject to a license. Learn more: ~LicenseLog:2224225373.
-# Suggested code may be subject to a license. Learn more: ~LicenseLog:1840908862.
-# Suggested code may be subject to a license. Learn more: ~LicenseLog:51608532.
-# Suggested code may be subject to a license. Learn more: ~LicenseLog:1035085478.
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
-from .forms import PostForm
-
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
+        form = PostForm(request.POST, request.FILES, instance=post)  # Include request.FILES for file uploads
         if form.is_valid():
             form.save()
-            return redirect('post_detail', pk=post.pk)
+            return redirect('index')  # Redirect to the index page after saving
     else:
         form = PostForm(instance=post)
-    return render(request, 'post_edit.html', {'form': form, 'post': post})
+    return render(request, 'post_edit.html', {'form': form})
+
+def rate_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        rating = int(request.POST.get("rating", 0))
+        if 1 <= rating <= 5:  # Ensure valid rating
+            post.rating = rating
+            post.save()
+    return redirect('index')  # Redirect back to the homepage
+
+def top_rated_posts(request):
+    # Order posts by rating in descending order (highest first)
+    posts = Post.objects.all().order_by('-rating')
+    return render(request, 'top_rated.html', {'posts': posts})
