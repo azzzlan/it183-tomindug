@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
 
 @login_required
 def index(request):
@@ -69,10 +70,11 @@ def rate_post(request, pk):
             )
     return redirect('index')  # Redirect back to the homepage
 
+
 @login_required
 def top_rated_posts(request):
-    # Order posts by average rating in descending order (highest first)
-    posts = Post.objects.all().order_by('-id')  # Assuming you're calculating average rating elsewhere
+    # Efficiently calculate average ratings and order by descending average rating
+    posts = Post.objects.annotate(average_rating=Avg('ratings__value')).order_by('-average_rating')
 
     # Add user-specific rating data
     for post in posts:
