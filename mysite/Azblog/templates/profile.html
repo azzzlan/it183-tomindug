@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center" style="color: #58A6FF;">Profile</h1>
+
+    <!-- Profile Card -->
+    <div class="card mx-auto mt-4" style="max-width: 600px; background-color: #161B22; color: #E6EDF3;">
+        <div class="card-body text-center">
+            <img src="https://i.pravatar.cc/150" alt="Profile Picture" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+
+            <h3 class="card-title text-primary">{{ user.username }}</h3>
+        </div>
+    </div>
+
+    <!-- User's Posts -->
+    <h2 class="mt-5 mb-4" style="color: #58A6FF;">Your Posts</h2>
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card" style="background-color: #161B22; color: #E6EDF3;">
+                {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post Image" class="card-img-top" style="max-height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.content|truncatewords:15 }}</p>
+                    <a href="{% url 'post_detail' post.id %}" class="btn btn-primary btn-sm">View Post</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center mt-4">You have not created any posts yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

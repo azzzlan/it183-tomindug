@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}
+Sign Up
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .signup-container {
+        max-width: 400px;
+        margin: 50px auto;
+        background-color: #161B22;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .signup-container h1 {
+        text-align: center;
+        color: #58A6FF;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+    }
+
+    .signup-container input {
+        background-color: #0D1117;
+        border: 1px solid #30363D;
+        color: #E6EDF3;
+        padding: 10px;
+        border-radius: 8px;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .signup-container input:focus {
+        border-color: #58A6FF;
+        outline: none;
+        box-shadow: 0 0 5px rgba(88, 166, 255, 0.5);
+    }
+
+    .signup-container button {
+        background-color: #58A6FF;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        color: #FFFFFF;
+        font-weight: bold;
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .signup-container button:hover {
+        background-color: #1F6FEB;
+    }
+
+    .signup-container .login-link {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+        color: #58A6FF;
+    }
+
+    .signup-container .login-link a {
+        text-decoration: none;
+        color: #58A6FF;
+    }
+
+    .signup-container .login-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="signup-container">
+    <h1>Sign Up</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+    </form>
+    <div class="login-link">
+        Already have an account? <a href="{% url 'login' %}">Login</a>
+    </div>
+</div>
+{% endblock %}
